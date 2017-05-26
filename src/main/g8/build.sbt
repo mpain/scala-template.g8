@@ -1,28 +1,55 @@
-name := "$name;format="normalize"$"
-organization := "$organization$"
-version := "$version$"
+import sbt._
+import versions.Version
 
-scalaVersion in ThisBuild := "$scala_version$"
+lazy val buildSettings = Seq(
+  organization := "$organization$",
+  scalaVersion := "$scala_version$"
+)
 
-libraryDependencies ++= dependencies.libs
-testOptions += Tests.Argument("-l", "org.scalatest.tags.Network")
+lazy val commonSettings = Seq(
+  scalacOptions ++= commonScalacOptions,
+  libraryDependencies ++= Seq(
+    compilerPlugin("org.spire-math" %% "kind-projector" % Version.KindProjector),
+    compilerPlugin("org.scalamacros" % "paradise" % Version.MacroParadise cross CrossVersion.full)
+  )
+)
 
-scalacOptions ++= Seq(
-  "-target:jvm-1.8",
+lazy val $name;format="camel"$Settings = commonSettings ++ buildSettings ++ buildInfoSettings ++ dependencies.libs
+
+lazy val $name;format="camel"$ = project
+  .in(file("."))
+  .enablePlugins(BuildInfoPlugin)
+  .settings(moduleName := "$name;format="normalize"$")
+  .settings($name;format="camel"$Settings)
+  .settings(noPublishSettings)
+
+
+lazy val buildInfoSettings = Seq(
+  buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion),
+  buildInfoPackage := "$organization$.build"
+)
+
+lazy val commonScalacOptions = Seq(
   "-deprecation",
-  "-encoding", "UTF-8",
+  "-encoding",
+  "UTF-8",
   "-feature",
   "-language:existentials",
   "-language:higherKinds",
   "-language:implicitConversions",
+  "-language:experimental.macros",
   "-unchecked",
-  "-Ywarn-unused-import",
-  "-Ywarn-nullary-unit",
   "-Xfatal-warnings",
   "-Xlint",
+  "-Yno-adapted-args",
   "-Ywarn-dead-code",
-  "-Xfuture")
+  "-Ywarn-numeric-widen",
+  "-Ywarn-value-discard",
+  "-Ywarn-unused-import",
+  "-Ypartial-unification"
+)
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+lazy val noPublishSettings = Seq(publish := (), publishLocal := (), publishArtifact := false)
 
-packAutoSettings
+addCommandAlias("validate", ";clean;test")
+

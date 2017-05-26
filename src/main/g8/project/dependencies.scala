@@ -1,22 +1,53 @@
 import sbt._
+import sbt.Keys._
+import versions.Version
 
 object dependencies {
-  object Versions {
+
+  trait Libraries {
+    def libs: Seq[ModuleID]
   }
 
-  private lazy val logging = Seq(
-    "ch.qos.logback" % "logback-classic" % "1.1.9",
-    "org.slf4j" % "slf4j-api" % "1.7.22"
-  )
+  object cats extends Libraries {
+    override def libs = Seq("org.typelevel" %% "cats-core" % Version.Cats)
+  }
 
-  private lazy val common = Seq(
-    "com.github.scopt" %% "scopt" % "3.5.0",
-    "com.iheart" %% "ficus" % "1.4.0"
-  )
+  object monix extends Libraries {
+    def module(name: String) = "io.monix" %% name % Version.Monix
 
-  private lazy val scalaTest = Seq(
-    "org.scalatest" %% "scalatest" % "3.0.1" % Test
-  )
+    override def libs = Seq(
+      module("monix-types"),
+      module("monix-eval"),
+      module("monix-cats")
+    )
+  }
 
-  lazy val libs = common ++ logging ++ scalaTest
+  object logging extends Libraries {
+    override def libs = Seq(
+      "ch.qos.logback" % "logback-classic" % Version.Logback,
+      "org.slf4j" % "slf4j-api" % Version.Slf4j
+    )
+  }
+
+  object common extends Libraries {
+    override def libs = Seq(
+      "com.github.scopt" %% "scopt" % Version.Scopt
+    )
+  }
+
+  object testing extends Libraries {
+    override def libs = Seq(
+      "org.scalatest" %% "scalatest" % Version.Scalatest % Test
+    )
+  }
+
+  lazy val libs = Seq(
+    libraryDependencies ++= (
+      logging.libs ++
+      common.libs ++
+      cats.libs ++
+      monix.libs ++
+      testing.libs
+    )
+  )
 }
