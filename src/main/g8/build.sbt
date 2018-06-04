@@ -22,6 +22,10 @@ lazy val $name;format="camel"$ = project
   .settings($name;format="camel"$Settings)
   .settings(noPublishSettings)
 
+lazy val buildInfoSettings = Seq(
+  buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion),
+  buildInfoPackage := "ru.mail.money.build"
+)
 
 lazy val commonScalacOptions = Seq(
   "-deprecation",
