@@ -1,9 +1,6 @@
 logLevel := Level.Warn
 
-addSbtPlugin("org.xerial.sbt" % "sbt-pack" % "0.8.2")
-
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
-
-addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.3.0")
-
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.7.0")
+addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.7")
+addSbtPlugin("org.xerial.sbt" % "sbt-pack" % "0.9.1")
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.0")
+addSbtPlugin("org.duhemm" % "sbt-errors-summary" % "0.6.0")
