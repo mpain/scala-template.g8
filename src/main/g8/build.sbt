@@ -14,11 +14,10 @@ lazy val commonSettings = Seq(
   )
 )
 
-lazy val $name;format="camel"$Settings = commonSettings ++ buildSettings ++ buildInfoSettings ++ dependencies.libs
+lazy val $name;format="camel"$Settings = commonSettings ++ buildSettings ++ dependencies.libs
 
 lazy val $name;format="camel"$ = project
   .in(file("."))
-  .enablePlugins(BuildInfoPlugin)
   .settings(moduleName := "$name;format="normalize"$", name := "$name$")
   .settings($name;format="camel"$Settings)
   .settings(noPublishSettings)
@@ -44,7 +43,7 @@ lazy val commonScalacOptions = Seq(
   "-Ypartial-unification"
 )
 
-lazy val noPublishSettings = Seq(publish := (), publishLocal := (), publishArtifact := false)
+lazy val noPublishSettings = Seq(publish := ((): Unit), publishLocal := ((): Unit), publishArtifact := false)
 
 addCommandAlias("validate", ";clean;test")
 
