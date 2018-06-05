@@ -18,6 +18,8 @@ lazy val $name;format="camel"$Settings = commonSettings ++ buildSettings ++ depe
 
 lazy val $name;format="camel"$ = project
   .in(file("."))
+  .enablePlugins(PackPlugin)
+  .enablePlugins(BuildInfoPlugin)
   .settings(moduleName := "$name;format="normalize"$", name := "$name$")
   .settings($name;format="camel"$Settings)
   .settings(noPublishSettings)

@@ -9,16 +9,17 @@ object dependencies {
   }
 
   object cats extends DependencyGroup {
-    override def libs = Seq("org.typelevel" %% "cats-core" % Version.Cats)
+    override def libs = Seq(
+      "org.typelevel" %% "cats-core" % Version.Cats,
+      "org.typelevel" %% "cats-effect" % Version.CatsEffect
+    )
   }
 
   object monix extends DependencyGroup {
     def module(name: String) = "io.monix" %% name % Version.Monix
 
     override def libs = Seq(
-      module("monix-types"),
-      module("monix-eval"),
-      module("monix-cats")
+      module("monix")
     )
   }
 
